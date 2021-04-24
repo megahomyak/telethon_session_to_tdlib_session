@@ -143,7 +143,7 @@ async def on_startup():
         )
         auth_codes[phone_number] = None
         # noinspection PyTypeChecker,PyUnresolvedReferences
-        await client.start("***REMOVED***")
+        await client.start(phone_number)
 
 
 uvicorn.run(api, log_level="warning")
