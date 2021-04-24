@@ -26,6 +26,26 @@ TELEGRAM_SERVICE_NOTIFICATIONS_USER_ID = 777000
 # noinspection RegExpAnonymousGroup
 LOGIN_CODE_REGEX = re.compile(r"Login code: (\d+).")
 
+TIMEOUT_ERROR = {
+    HTTP_504_GATEWAY_TIMEOUT: {
+        "model": response_models.MyTimeoutError,
+        "description": f"Response time is bigger than {TIMEOUT} seconds"
+    }
+}
+BAD_TOKEN_ERROR = {
+    **TIMEOUT_ERROR,
+    HTTP_401_UNAUTHORIZED: {
+        "model": response_models.SimpleError, "description": "Invalid token"
+    }
+}
+BAD_PHONE_NUMBER_ERROR = {
+    **BAD_TOKEN_ERROR,
+    HTTP_500_INTERNAL_SERVER_ERROR: {
+        "model": response_models.SimpleError,
+        "description": "Invalid phone number"
+    }
+}
+
 with open("config.json", "r") as f:
     CONFIG = json.load(f)
 
@@ -45,7 +65,7 @@ def make_error_response(
 
 
 BAD_TOKEN_RESPONSE = make_error_response(
-    "Token is invalid!", status_code=HTTP_401_UNAUTHORIZED
+    "Invalid token", status_code=HTTP_401_UNAUTHORIZED
 )
 
 
@@ -65,7 +85,7 @@ async def timeout_middleware(request: fastapi.Request, call_next):
 
 @api.get("/get_auth_code", description=(
     "Gets auth code for telegram account from the specified file"
-), response_model=response_models.AuthCode)
+), response_model=response_models.AuthCode, responses=BAD_PHONE_NUMBER_ERROR)
 async def get_auth_code(token: str, phone_number: str):
     if token == CONFIG["api_token"]:
         if phone_number not in auth_codes:
@@ -84,7 +104,7 @@ async def get_auth_code(token: str, phone_number: str):
 
 @api.get(
     "/get_auth_codes", description="Gets all auth codes",
-    response_model=response_models.AuthCodes
+    response_model=response_models.AuthCodes, responses=BAD_TOKEN_ERROR
 )
 async def get_auth_codes(token: str):
     if token == CONFIG["api_token"]:

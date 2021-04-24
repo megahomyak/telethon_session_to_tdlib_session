@@ -23,3 +23,19 @@ class AuthCode(BaseModel):
                 "auth_code": 12345
             }
         }
+
+
+class SimpleError(BaseModel):
+    detail: str
+
+
+class MyTimeoutError(BaseModel):
+    processing_time: float
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "detail": "Request processing time excedeed limit",
+                "processing_time": 	89.99175810813904
+            }
+        }
