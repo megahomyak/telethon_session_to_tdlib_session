@@ -24,7 +24,7 @@ TIMEOUT = 90
 
 TELEGRAM_SERVICE_NOTIFICATIONS_USER_ID = 777000
 # noinspection RegExpAnonymousGroup
-LOGIN_CODE_REGEX = re.compile(r"Login code: (\d+).")
+LOGIN_CODE_REGEX = re.compile(r".+?(\d+)")
 
 TIMEOUT_ERROR = {
     HTTP_504_GATEWAY_TIMEOUT: {
