@@ -1,0 +1,1 @@
+"sessions" folder with telethon sessions -> convertation -> "tdlib" folder with tdlib sessions
