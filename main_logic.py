@@ -6,6 +6,8 @@ import re
 from dataclasses import dataclass
 
 import telethon
+# noinspection PyPackageRequirements
+# because this module is named "python-telegram"
 from telegram.client import Telegram
 from telethon.events import NewMessage
 from telethon.tl.types import PeerUser
