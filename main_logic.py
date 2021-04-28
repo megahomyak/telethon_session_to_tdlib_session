@@ -61,7 +61,11 @@ async def main():
             api_id=CONFIG["api_id"], api_hash=CONFIG["api_hash"]
         )
         await client.connect()
-        phone = (await client.get_me()).phone
+        try:
+            phone = (await client.get_me()).phone
+        except AttributeError:  # 'NoneType' object has no attribute 'phone'
+            print(f"`{session_file_name}` isn't logged in! Skipping it.")
+            continue
         tdlib_session = Telegram(
             api_hash=CONFIG["api_hash"],
             api_id=CONFIG["api_id"],
