@@ -44,7 +44,6 @@ async def check_incoming_tg_message(
         tdlib_session.stop()
         context.amount_of_accounts_to_process -= 1
         if context.amount_of_accounts_to_process == 0:
-            print(f"Done. Check \"{TDLIB_SESSIONS_FOLDER_NAME}\" folder.")
             exit()
 
 
@@ -89,4 +88,4 @@ async def main():
 try:
     asyncio.run(main())
 except asyncio.CancelledError:
-    pass  # PSSSSSH! Silence
+    print(f"Done. Check \"{TDLIB_SESSIONS_FOLDER_NAME}\" folder.")
