@@ -72,7 +72,7 @@ async def main():
             api_id=CONFIG["api_id"],
             database_encryption_key=CONFIG["tdlib_database_encryption_key"],
             files_directory=os.path.join(TDLIB_SESSIONS_FOLDER_NAME, phone),
-            phone=phone
+            phone=phone, tdlib_verbosity=0
         )
         tdlib_session.login(blocking=False)
         client.add_event_handler(
